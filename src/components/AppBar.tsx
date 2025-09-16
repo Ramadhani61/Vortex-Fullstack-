@@ -1,38 +1,44 @@
 "use client";
 import Image from "next/image";
 import * as React from "react";
-import { getSession } from "@/components/lib/auth";
 import { usePathname } from "next/navigation";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
-import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import { logout } from "@/components/lib/auth";
+import { clearSession } from "@/components/lib/auth";
+import { useRouter } from "next/navigation";
 
 export default function AppBar() {
   const pathname = usePathname();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
+  const router = useRouter();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleLogout = () => {
+    clearSession();
+    setTimeout(() => {
+      router.push("/login");
+    }, 1000);
+  };
+
   return (
     <nav className="bg-white fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         <div className="font-bold text-xl text-blue-600">
           <Image
-            src="../assets/logo.svg"
+            src="/logo.svg"
             width={90}
             height={40}
-            alt="Picture of the author"
+            alt=""
           />
         </div>
         <ul className="hidden md:flex gap-12 text-gray-700">
@@ -135,7 +141,7 @@ export default function AppBar() {
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <MenuItem onClick={logout}>
+              <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

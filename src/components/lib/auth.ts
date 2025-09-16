@@ -35,8 +35,3 @@ export const getSession = () => {
 export const clearSession = () => {
   Cookies.remove("session");
 };
-
-// Logout
-export const logout = () => {
-  clearSession();
-};
